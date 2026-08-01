@@ -148,16 +148,15 @@
     </div>
 
     <script>
-        // === PASTE YOUR FIREBASE CONFIG KEYS HERE ===
         const firebaseConfig = {
-    apiKey: "AIzaSyB9eIz3NKcOv6Jsb8dK_L7nbwDUZdqUHYY",
-    authDomain: "mexico-couples-game.firebaseapp.com",
-    databaseURL: "https://mexico-couples-game-default-rtdb.firebaseio.com",
-    projectId: "mexico-couples-game",
-    storageBucket: "mexico-couples-game.firebasestorage.app",
-    messagingSenderId: "500624164564",
-    appId: "1:500624164564:web:22fd2c6e68839a5877dd41"
-  }; ============================================
+            apiKey: "AIzaSyB9eIz3NKcOv6Jsb8dK_L7nbwDUZdqUHYY",
+            authDomain: "mexico-couples-game.firebaseapp.com",
+            databaseURL: "https://mexico-couples-game-default-rtdb.firebaseio.com",
+            projectId: "mexico-couples-game",
+            storageBucket: "mexico-couples-game.firebasestorage.app",
+            messagingSenderId: "500624164564",
+            appId: "1:500624164564:web:22fd2c6e68839a5877dd41"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database().ref('game_state');
