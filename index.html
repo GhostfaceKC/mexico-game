@@ -48,7 +48,7 @@
             gap: 6px;
             overflow-x: auto;
             padding-bottom: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             -webkit-overflow-scrolling: touch;
         }
         .day-tab {
@@ -62,6 +62,7 @@
             white-space: nowrap;
             cursor: pointer;
             flex-shrink: 0;
+            transition: all 0.2s ease;
         }
         .day-tab.active {
             background: var(--accent-pink);
@@ -70,8 +71,9 @@
             box-shadow: 0 2px 10px rgba(255, 42, 117, 0.4);
         }
 
-        /* Itinerary Section */
+        /* Itinerary Section (Hidden by default) */
         .itinerary-card {
+            display: none;
             background: var(--card-bg);
             border-radius: 14px;
             padding: 14px 16px;
@@ -159,11 +161,11 @@
 
     <!-- Day Selector Tabs -->
     <div class="day-tabs">
-        <button class="day-tab active" onclick="switchDay('thu', this)">Thu</button>
-        <button class="day-tab" onclick="switchDay('fri', this)">Fri</button>
-        <button class="day-tab" onclick="switchDay('sat', this)">Sat (Wedding)</button>
-        <button class="day-tab" onclick="switchDay('sun', this)">Sun</button>
-        <button class="day-tab" onclick="switchDay('mon', this)">Mon</button>
+        <button class="day-tab" onclick="toggleDay('thu', this)">Thu</button>
+        <button class="day-tab" onclick="toggleDay('fri', this)">Fri</button>
+        <button class="day-tab" onclick="toggleDay('sat', this)">Sat (Wedding)</button>
+        <button class="day-tab" onclick="toggleDay('sun', this)">Sun</button>
+        <button class="day-tab" onclick="toggleDay('mon', this)">Mon</button>
     </div>
 
     <!-- Daily Itinerary Container -->
@@ -219,7 +221,6 @@
     </div>
 
     <script>
-        // STRICT CONFIRMED ITINERARY ONLY
         const itineraries = {
             thu: {
                 title: "Thursday • Arrival & Welcome",
@@ -301,22 +302,32 @@
             if (window.dbRef) window.dbRef.set(state);
         }
 
-        function switchDay(dayKey, element) {
-            if (element) {
-                document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
+        function toggleDay(dayKey, element) {
+            const displayBox = document.getElementById('itinerary-display');
+            const isActive = element.classList.contains('active');
+
+            // Reset all buttons
+            document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
+
+            if (isActive) {
+                // If it was already open, close it
+                displayBox.style.display = 'none';
+                displayBox.innerHTML = '';
+            } else {
+                // Open the selected day
                 element.classList.add('active');
+                const data = itineraries[dayKey];
+                let html = `<div class="itinerary-title">${data.title}</div>`;
+                html += data.items.map(i => `
+                    <div class="itinerary-item">
+                        <span class="itinerary-time">${i.time}</span>
+                        <span>${i.text}</span>
+                    </div>
+                `).join('');
+                
+                displayBox.innerHTML = html;
+                displayBox.style.display = 'block';
             }
-            
-            const data = itineraries[dayKey];
-            let html = `<div class="itinerary-title">${data.title}</div>`;
-            html += data.items.map(i => `
-                <div class="itinerary-item">
-                    <span class="itinerary-time">${i.time}</span>
-                    <span>${i.text}</span>
-                </div>
-            `).join('');
-            
-            document.getElementById('itinerary-display').innerHTML = html;
         }
 
         function adjustScore(player, val) {
@@ -369,9 +380,7 @@
             renderCategory('daily-quests', quests.daily);
         }
 
-        // Initialize UI instantly on load
         window.onload = function() {
-            switchDay('thu', document.querySelector('.day-tab.active'));
             updateUI();
         };
 
