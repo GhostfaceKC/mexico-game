@@ -1,638 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mexico Romantic Mission</title>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Couple's Spanish Phrasebook</title>
+  <style>
+    :root {
+      --bg-dark: #121826;
+      --card-bg: #1e293b;
+      --accent-rose: #f43f5e;
+      --accent-gold: #f59e0b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --border-color: #334155;
+    }
 
-    <style>
-        :root {
-            --bg-color: #120b18;
-            --card-bg: #1e1329;
-            --accent-pink: #ff2a75;
-            --accent-gold: #ffb703;
-            --accent-teal: #00f5d4;
-            --text-color: #f8f9fa;
-            --text-muted: #c9bedc;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 16px;
-            font-size: 16px;
-            box-sizing: border-box;
-            -webkit-user-select: none;
-        }
+    /* Modal / Container Shell */
+    .phrasebook-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+    }
 
-        .header { text-align: center; padding: 10px 0 15px; }
-        .header h1 {
-            font-size: 26px; 
-            margin: 0;
-            background: linear-gradient(45deg, var(--accent-pink), var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .header p { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
+    .modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        /* Day Navigation Tabs */
-        .day-tabs {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .day-tab {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 42, 117, 0.3);
-            color: var(--text-muted);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            white-space: nowrap;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-        .day-tab.active {
-            background: var(--accent-pink);
-            color: #fff;
-            border-color: var(--accent-pink);
-            box-shadow: 0 2px 10px rgba(255, 42, 117, 0.4);
-        }
+    .modal-header h2 {
+      margin: 0 0 6px 0;
+      font-size: 1.5rem;
+      color: var(--text-main);
+    }
 
-        /* Itinerary Section (Hidden by default) */
-        .itinerary-card {
-            display: none;
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 15px;
-            border: 1px solid var(--accent-teal);
-        }
-        .itinerary-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--accent-teal);
-            margin-bottom: 8px;
-        }
-        .itinerary-item {
-            font-size: 14px;
-            color: var(--text-color);
-            margin-bottom: 6px;
-            line-height: 1.4;
-            display: flex;
-            gap: 8px;
-        }
-        .itinerary-time {
-            color: var(--accent-gold);
-            font-weight: bold;
-            min-width: 75px;
-        }
+    .modal-header p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
 
-        /* Full Details Button */
-        .details-btn-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .details-btn {
-            width: 100%;
-            background: rgba(0, 245, 212, 0.1);
-            border: 1px solid var(--accent-teal);
-            color: var(--accent-teal);
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .details-btn:active {
-            background: rgba(0, 245, 212, 0.25);
-        }
+    /* Category Filter Buttons */
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
 
-        /* Modal Details Popup */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--accent-pink);
-            border-radius: 18px;
-            padding: 20px;
-            max-width: 500px;
-            margin: 20px auto;
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            font-size: 18px;
-            border-radius: 50%;
-            width: 32px; height: 32px;
-            cursor: pointer;
-        }
-        .modal-h2 {
-            color: var(--accent-gold);
-            font-size: 18px;
-            margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 8px;
-        }
-        .modal-section {
-            margin-bottom: 16px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .modal-section h3 {
-            color: var(--accent-teal);
-            font-size: 14px;
-            margin: 0 0 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-            color: var(--text-muted);
-        }
-        .info-row strong { color: var(--text-color); text-align: right; }
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
 
-        .quick-links-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .link-btn {
-            flex: 1;
-            background: rgba(255, 42, 117, 0.15);
-            border: 1px solid var(--accent-pink);
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: bold;
-        }
+    .tab-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-        /* Checkbox List Styling */
-        .check-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.05);
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .check-item input { accent-color: var(--accent-pink); }
-        .check-item.done { opacity: 0.5; text-decoration: line-through; }
+    .tab-btn.active {
+      background: var(--accent-rose);
+      color: #fff;
+      border-color: var(--accent-rose);
+      font-weight: 600;
+    }
 
-        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
-        .player-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 42, 117, 0.4);
-            border-radius: 18px; padding: 16px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .player-name { font-size: 18px; font-weight: bold; color: var(--accent-gold); margin-bottom: 4px; }
-        .player-score { font-size: 38px; font-weight: 800; color: var(--text-color); margin: 6px 0; }
+    /* Phrase List & Cards */
+    .phrase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .score-btn-group { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
-        .score-btn {
-            background: rgba(255, 255, 255, 0.12); border: none; color: var(--text-color);
-            padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer;
-        }
-        .score-btn:active { background: var(--accent-pink); }
+    .phrase-card {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s ease;
+    }
 
-        .section-title {
-            font-size: 18px; font-weight: bold; margin: 24px 0 12px;
-            display: flex; align-items: center; gap: 8px; color: var(--accent-teal);
-        }
+    .phrase-card.risque {
+      border-left: 4px solid var(--accent-rose);
+    }
 
-        .quest-card {
-            background: var(--card-bg); border-radius: 14px; padding: 14px 16px;
-            margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
-            gap: 12px; border-left: 5px solid var(--accent-pink);
-        }
-        .quest-info { flex: 1; }
-        .quest-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
-        .quest-pts { font-size: 13px; color: var(--accent-gold); font-weight: bold; }
+    .phrase-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 12px;
+    }
 
-        .claim-btns { display: flex; gap: 8px; }
-        .claim-btn {
-            border: none; border-radius: 8px; padding: 8px 14px;
-            font-size: 14px; font-weight: bold; color: #fff; cursor: pointer; opacity: 0.85;
-        }
-        .claim-btn.f { background: #7b2cbf; }
-        .claim-btn.t { background: #ff2a75; }
-        .claim-btn.claimed { opacity: 0.25; text-decoration: line-through; }
+    .phrase-en {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
 
-        .reward-card {
-            background: linear-gradient(135deg, rgba(255,183,3,0.18), rgba(255,42,117,0.18));
-            border: 1px dashed var(--accent-gold); border-radius: 14px;
-            padding: 14px 16px; margin-bottom: 12px; text-align: center;
-        }
-        .reward-title { font-size: 16px; font-weight: bold; color: var(--accent-gold); }
-        .reward-desc { font-size: 14px; color: var(--text-muted); margin-top: 6px; line-height: 1.3; }
+    .phrase-es {
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 600;
+    }
 
-        .reset-container { text-align: center; margin: 35px 0 15px; }
-        .reset-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 10px 20px; border-radius: 20px; font-size: 13px; cursor: pointer; }
-    </style>
+    .phrase-note {
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    /* Action Buttons */
+    .phrase-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+      background: var(--accent-rose);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--accent-rose);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>🇲🇽 Passion in Paradise</h1>
-        <p>El Dorado Royale • Couple's Challenge</p>
+  <div class="phrasebook-container">
+    <div class="modal-header">
+      <h2>🇲🇽 Spanish Phrasebook</h2>
+      <p>Tailored for couples in Mexico</p>
     </div>
 
-    <!-- Day Selector Tabs -->
-    <div class="day-tabs">
-        <button class="day-tab" onclick="toggleDay('thu', this)">Thu</button>
-        <button class="day-tab" onclick="toggleDay('fri', this)">Fri</button>
-        <button class="day-tab" onclick="toggleDay('sat', this)">Sat (Wedding)</button>
-        <button class="day-tab" onclick="toggleDay('sun', this)">Sun</button>
-        <button class="day-tab" onclick="toggleDay('mon', this)">Mon</button>
+    <!-- Category Filter Tabs -->
+    <div class="category-tabs" id="categoryTabs">
+      <button class="tab-btn active" data-category="all">All</button>
+      <button class="tab-btn" data-category="drinks">🍹 Drinks</button>
+      <button class="tab-btn" data-category="romantic">❤️ Romantic</button>
+      <button class="tab-btn" data-category="flirty">💃 Flirty</button>
+      <button class="tab-btn" data-category="spicy">🌶️ Spicy</button>
     </div>
 
-    <!-- Daily Itinerary Container -->
-    <div id="itinerary-display" class="itinerary-card"></div>
+    <!-- Phrase Cards Feed -->
+    <div class="phrase-list" id="phraseList"></div>
+  </div>
 
-    <!-- Full Itinerary Details Button -->
-    <div class="details-btn-container">
-        <button class="details-btn" onclick="toggleModal(true)">
-            📋 Flight, Hotel & Trip Reference Guide
-        </button>
-    </div>
+  <!-- Toast Pop-up -->
+  <div id="toast" class="toast">Copied to clipboard!</div>
 
-    <div class="scoreboard">
-        <div class="player-card">
-            <div class="player-name">Francisco</div>
-            <div class="player-score" id="score-f">0</div>
-            <div class="score-btn-group">
-                <button class="score-btn" onclick="adjustScore('f', -5)">-5</button>
-                <button class="score-btn" onclick="adjustScore('f', 5)">+5</button>
-            </div>
-        </div>
-        <div class="player-card">
-            <div class="player-name">Tiffany</div>
-            <div class="player-score" id="score-t">0</div>
-            <div class="score-btn-group">
-                <button class="score-btn" onclick="adjustScore('t', -5)">-5</button>
-                <button class="score-btn" onclick="adjustScore('t', 5)">+5</button>
-            </div>
-        </div>
-    </div>
+  <script>
+    // Master Phrasebook Dataset
+    const phrases = [
+      // DRINKS & ESSENTIALS
+      {
+        id: 1,
+        category: "drinks",
+        en: '"Another drink, love?"',
+        es: '¿Otro trago, mi amor?',
+        note: 'Natural Mexican slang for an alcoholic drink'
+      },
+      {
+        id: 2,
+        category: "drinks",
+        en: '"Can I buy you a drink?"',
+        es: '¿Te puedo invitar un trago?',
+        note: 'Sweet & classic'
+      },
 
-    <div class="section-title">🔥 Flirty & Steamy Quests</div>
-    <div id="sexy-quests"></div>
+      // ROMANTIC & AFFECTIONATE
+      {
+        id: 3,
+        category: "romantic",
+        en: '"You look gorgeous"',
+        es: 'Te ves hermosísima, mi amor',
+        note: 'Use "guapísimo" for him'
+      },
+      {
+        id: 4,
+        category: "romantic",
+        en: '"You have a beautiful smile"',
+        es: 'Tienes una sonrisa hermosa',
+        note: 'Warm compliment'
+      },
+      {
+        id: 5,
+        category: "romantic",
+        en: '"I\'m so lucky to have you"',
+        es: 'Qué suerte tengo de tenerte',
+        note: 'Sweet couple staple'
+      },
+      {
+        id: 6,
+        category: "romantic",
+        en: '"I love you so much"',
+        es: 'Te amo muchísimo',
+        note: 'Deep affection'
+      },
 
-    <div class="section-title">🌅 Romantic Resort Moments</div>
-    <div id="romantic-quests"></div>
+      // FLIRTY & PLAYFUL
+      {
+        id: 7,
+        category: "flirty",
+        en: '"Kiss me right now"',
+        es: 'Dame un beso ahora mismo',
+        note: 'Playful & affectionate'
+      },
+      {
+        id: 8,
+        category: "flirty",
+        en: '"Let\'s go back to the room"',
+        es: 'Regresemos al cuarto',
+        note: 'Natural way to say go back'
+      },
+      {
+        id: 9,
+        category: "flirty",
+        en: '"I can\'t stop looking at you"',
+        es: 'No puedo dejar de mirarte',
+        note: 'Seductive gaze'
+      },
+      {
+        id: 10,
+        category: "flirty",
+        en: '"Would you like to dance?"',
+        es: '¿Quieres bailar conmigo?',
+        note: 'Great for resort music/nightlife'
+      },
+      {
+        id: 11,
+        category: "flirty",
+        en: '"You still drive me crazy"',
+        es: 'Me sigues volviendo loco',
+        note: 'Use "loca" if female'
+      },
 
-    <div class="section-title">🍹 Wedding & Resort Fun</div>
-    <div id="trip-quests"></div>
+      // SPICY & RISQUÉ
+      {
+        id: 12,
+        category: "spicy",
+        en: '"You have no idea what I want to do to you"',
+        es: 'No tienes idea de lo que quiero hacerte',
+        note: 'Whisper in the ear'
+      },
+      {
+        id: 13,
+        category: "spicy",
+        en: '"I can\'t wait to take your clothes off"',
+        es: 'Tengo muchas ganas de quitarte la ropa',
+        note: 'Direct & passionate'
+      }
+    ];
 
-    <div class="section-title">📆 Daily 5-Day Missions</div>
-    <div id="daily-quests"></div>
+    const phraseListEl = document.getElementById("phraseList");
+    const categoryTabs = document.getElementById("categoryTabs");
+    const toastEl = document.getElementById("toast");
 
-    <div class="section-title">🏆 Joint Rewards Unlocked</div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 100 Pts</div>
-        <div class="reward-desc">Sunset Champagne Toast & Private Pool Kiss Session</div>
-    </div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 250 Pts</div>
-        <div class="reward-desc">Partner Massage with Tropical Oils in the Room</div>
-    </div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 400 Pts</div>
-        <div class="reward-desc">Winner Chooses a Secret Fantasy to Fulfill on Night 4/5</div>
-    </div>
+    // Render Function
+    function renderPhrases(filter = "all") {
+      phraseListEl.innerHTML = "";
+      
+      const filtered = filter === "all" 
+        ? phrases 
+        : phrases.filter(p => p.category === filter);
 
-    <div class="reset-container">
-        <button class="reset-btn" onclick="resetGame()">Reset Game Scores</button>
-    </div>
+      filtered.forEach(p => {
+        const isSpicy = p.category === "spicy";
+        const card = document.createElement("div");
+        card.className = `phrase-card ${isSpicy ? "risque" : ""}`;
 
-    <!-- Modal Reference Guide Window -->
-    <div id="details-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="toggleModal(false)">✕</button>
-            <h2 class="modal-h2">🇲🇽 Trip Reference Guide</h2>
+        card.innerHTML = `
+          <div class="phrase-content">
+            <span class="phrase-en">${p.en}</span>
+            <span class="phrase-es">${p.es}</span>
+            <span class="phrase-note">${p.note}</span>
+          </div>
+          <div class="phrase-actions">
+            <button class="icon-btn" onclick="speakText('${escapeQuotes(p.es)}')" title="Listen">🔊</button>
+            <button class="icon-btn" onclick="copyText('${escapeQuotes(p.es)}')" title="Copy">📋</button>
+          </div>
+        `;
+        phraseListEl.appendChild(card);
+      });
+    }
 
-            <div class="quick-links-group">
-                <a href="2025-El-Dorado-Royale-Map.pdf" target="_blank" rel="noopener noreferrer" class="link-btn">🗺️ Resort Map (PDF)</a>
-                <a href="https://photos.app.goo.gl/8PqfNJhAP5mTvtb48" target="_blank" rel="noopener noreferrer" class="link-btn">📸 Shared Photos</a>
-            </div>
+    // Filter Tab Click Handling
+    categoryTabs.addEventListener("click", (e) => {
+      if (e.target.classList.contains("tab-btn")) {
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+        e.target.classList.add("active");
+        renderPhrases(e.target.dataset.category);
+      }
+    });
 
-            <div class="modal-section">
-                <h3>✈️ Southwest Flight Details</h3>
-                <div class="info-row"><span>Confirmation #:</span> <strong>CBNUX4</strong></div>
-                <div class="info-row"><span>Passengers:</span> <strong>Francisco & Tiffany Diaz</strong></div>
-                <div class="info-row"><span>Departing (Thu Aug 6):</span> <strong>MCI 08:25 AM ➔ CUN 01:30 PM</strong></div>
-                <div class="info-row"><span>Flight #:</span> <strong>#2008 / #1995 (Stop: STL)</strong></div>
-                <div class="info-row"><span>Returning (Mon Aug 10):</span> <strong>CUN 05:05 PM ➔ MCI 10:55 PM</strong></div>
-                <div class="info-row"><span>Flight #:</span> <strong>#308 / #3709 (Stop: HOU)</strong></div>
-            </div>
+    // Helper: Escape quotes for inline onclick strings
+    function escapeQuotes(str) {
+      return str.replace(/'/g, "\\'");
+    }
 
-            <div class="modal-section">
-                <h3>🏨 Resort Information</h3>
-                <div class="info-row"><span>Hotel:</span> <strong>El Dorado Royale</strong></div>
-                <div class="info-row"><span>Address:</span> <strong>Carretera Cancún - Tulum KM 45</strong></div>
-                <div class="info-row"><span>Front Desk Phone:</span> <strong>+52 998 872 8000</strong></div>
-                <div class="info-row"><span>Check-in / Out:</span> <strong>3:00 PM / 12:00 PM</strong></div>
-            </div>
+    // Audio Speech Synth (Spanish Accent)
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop active speech
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-MX';
+        utterance.rate = 0.9; // Slightly slower for clear pronunciation
+        window.speechSynthesis.speak(utterance);
+      } else {
+        showToast("Audio not supported on this browser");
+      }
+    }
 
-            <div class="modal-section">
-                <h3>💍 Wedding Details</h3>
-                <div class="info-row"><span>Ceremony:</span> <strong>Saturday @ 4:30 PM (Beach)</strong></div>
-                <div class="info-row"><span>Reception:</span> <strong>Saturday @ 6:00 PM</strong></div>
-                <div class="info-row"><span>Rehearsal:</span> <strong>Friday @ 7:00 PM</strong></div>
-            </div>
+    // Copy to Clipboard Function
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Copied to clipboard!");
+      }).catch(() => {
+        showToast("Failed to copy");
+      });
+    }
 
-            <div class="modal-section">
-                <h3>💵 Tipping Guide (USD / MXN)</h3>
-                <div class="info-row"><span>Airport Shuttle Driver:</span> <strong>$5 - $10 USD</strong></div>
-                <div class="info-row"><span>Bellhop / Luggage:</span> <strong>$2 - $5 USD</strong></div>
-                <div class="info-row"><span>Bartender (Per Round):</span> <strong>$1 - $2 USD ($20-$50 MXN)</strong></div>
-                <div class="info-row"><span>Housekeeping (Daily):</span> <strong>$3 - $5 USD</strong></div>
-            </div>
+    // Toast Alert
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      setTimeout(() => {
+        toastEl.classList.remove("show");
+      }, 2000);
+    }
 
-            <div class="modal-section">
-                <h3>🇲🇽 Flirty Spanish Phrasebook</h3>
-                <div class="info-row"><span>"Another drink please":</span> <strong>Otro drink, por favor</strong></div>
-                <div class="info-row"><span>"You look gorgeous":</span> <strong>Te ves hermosísima</strong></div>
-                <div class="info-row"><span>"Kiss me right now":</span> <strong>Bésame ahora mismo</strong></div>
-                <div class="info-row"><span>"Let's go back to the room":</span> <strong>Vamos al cuarto ya</strong></div>
-            </div>
-
-            <div class="modal-section">
-                <h3>🧳 Packing Checklist</h3>
-                <div id="packing-list"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const itineraries = {
-            thu: {
-                title: "Thursday • Arrival & Welcome",
-                items: [
-                    { time: "08:25 AM", text: "Flight departs MCI (Southwest #2008 / #1995)" },
-                    { time: "01:30 PM", text: "Arrive at CUN Airport 🇲🇽" },
-                    { time: "03:00 PM", text: "Resort check-in & room setup" },
-                    { time: "07:30 PM", text: "Welcome Drinks at Guacamayas Lobby Bar" },
-                    { time: "08:30 PM", text: "Group Dinner at Kampai" }
-                ]
-            },
-            fri: {
-                title: "Friday • Pool & Pre-Wedding Fiesta",
-                items: [
-                    { time: "Daytime", text: "Free resort & pool time with the group" },
-                    { time: "07:00 PM", text: "Rehearsal Dinner / Pre-Wedding Event" }
-                ]
-            },
-            sat: {
-                title: "Saturday • Wedding Day! 🎉",
-                items: [
-                    { time: "Morning", text: "Resort relaxation & getting ready" },
-                    { time: "04:30 PM", text: "Beach Wedding Ceremony 💍" },
-                    { time: "06:00 PM", text: "Cocktail Hour & Wedding Reception" }
-                ]
-            },
-            sun: {
-                title: "Sunday • Recovery & Relax",
-                items: [
-                    { time: "Daytime", text: "Post-wedding pool chill / Free day" },
-                    { time: "07:00 PM", text: "Farewell Group Dinner at Fuentes" }
-                ]
-            },
-            mon: {
-                title: "Monday • Departure",
-                items: [
-                    { time: "Morning", text: "Breakfast & resort checkout" },
-                    { time: "02:00 PM", text: "Shuttle transfer to CUN Airport" },
-                    { time: "05:05 PM", text: "Flight departs CUN (Southwest #308 / #3709)" },
-                    { time: "10:55 PM", text: "Arrive back home at MCI" }
-                ]
-            }
-        };
-
-        const packingItems = [
-            "Passports & Driver's Licenses",
-            "Wedding Outfits & Formal Shoes",
-            "Swimwear & Beach Cover-ups",
-            "Reef-Safe Sunscreen & Sunglasses",
-            "Small Cash Bills ($1s & $5s for Tips)",
-            "Phone Chargers & Portable Battery"
-        ];
-
-        const quests = {
-            sexy: [
-                { id: 's1', text: 'Leave a seductive note on the bathroom mirror', pts: 15 },
-                { id: 's2', text: 'Whisper a spicy secret during dinner', pts: 20 },
-                { id: 's3', text: 'Order a surprise cocktail for your partner at the bar', pts: 10 },
-                { id: 's4', text: 'Initiate a passionate kiss under water in the pool/sea', pts: 25 },
-                { id: 's5', text: 'Late-night skinny dip or private hot tub session', pts: 35 },
-                { id: 's6', text: 'Steal your partner away from the group for 10 minutes alone', pts: 20 },
-                { id: 's7', text: 'Give a 2-minute shoulder massage on a beach lounge chair', pts: 15 }
-            ],
-            romantic: [
-                { id: 'r1', text: 'Catch a full sunset together on the pier', pts: 15 },
-                { id: 'r2', text: 'Slow dance together when no music is playing', pts: 20 },
-                { id: 'r3', text: 'Take a romantic beach stroll holding hands at night', pts: 15 },
-                { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes or Kampai', pts: 10 },
-                { id: 'r5', text: 'Take a golden-hour selfie together in formal dress', pts: 10 },
-                { id: 'r6', text: 'Order room service breakfast in bed', pts: 20 }
-            ],
-            trip: [
-                { id: 't1', text: 'Dance on the dance floor at the wedding reception', pts: 15 },
-                { id: 't2', text: 'Drink a fresh coconut or tropical drink on a beach chair', pts: 10 },
-                { id: 't3', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 },
-                { id: 't4', text: 'Try a new Mexican tequila or mezcal tasting together', pts: 15 }
-            ],
-            daily: [
-                { id: 'd1', text: 'Day 1: Compliment your partner on their resort outfit', pts: 10 },
-                { id: 'd2', text: 'Day 2: Take a swim-up bar shot together', pts: 15 },
-                { id: 'd3', text: 'Day 3: Secretly touch your partner during a group photo', pts: 20 },
-                { id: 'd4', text: 'Day 4: Pick out swimwear for each other for the day', pts: 15 },
-                { id: 'd5', text: 'Day 5: Share your favorite trip memory over a final drink', pts: 20 }
-            ]
-        };
-
-        let state = JSON.parse(localStorage.getItem('mexico_game_state')) || { scoreF: 0, scoreT: 0, claimed: {}, packing: {} };
-
-        function saveState() {
-            localStorage.setItem('mexico_game_state', JSON.stringify(state));
-            updateUI();
-            if (window.dbRef) window.dbRef.set(state);
-        }
-
-        function resetGame() {
-            if (confirm("Are you sure you want to reset all scores and claimed missions?")) {
-                state = { scoreF: 0, scoreT: 0, claimed: {}, packing: {} };
-                saveState();
-            }
-        }
-
-        function toggleDay(dayKey, element) {
-            const displayBox = document.getElementById('itinerary-display');
-            const isActive = element.classList.contains('active');
-
-            document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
-
-            if (isActive) {
-                displayBox.style.display = 'none';
-                displayBox.innerHTML = '';
-            } else {
-                element.classList.add('active');
-                const data = itineraries[dayKey];
-                let html = `<div class="itinerary-title">${data.title}</div>`;
-                html += data.items.map(i => `
-                    <div class="itinerary-item">
-                        <span class="itinerary-time">${i.time}</span>
-                        <span>${i.text}</span>
-                    </div>
-                `).join('');
-                
-                displayBox.innerHTML = html;
-                displayBox.style.display = 'block';
-            }
-        }
-
-        function toggleModal(show) {
-            document.getElementById('details-modal').style.display = show ? 'block' : 'none';
-        }
-
-        function togglePacking(index) {
-            state.packing[index] = !state.packing[index];
-            saveState();
-        }
-
-        function adjustScore(player, val) {
-            if (player === 'f') state.scoreF = Math.max(0, state.scoreF + val);
-            if (player === 't') state.scoreT = Math.max(0, state.scoreT + val);
-            saveState();
-        }
-
-        function claimQuest(questId, player, pts) {
-            const key = questId + '_' + player;
-            if (state.claimed[key]) {
-                delete state.claimed[key];
-                if (player === 'f') state.scoreF -= pts;
-                if (player === 't') state.scoreT -= pts;
-            } else {
-                state.claimed[key] = true;
-                if (player === 'f') state.scoreF += pts;
-                if (player === 't') state.scoreT += pts;
-            }
-            saveState();
-        }
-
-        function renderCategory(catId, items) {
-            const container = document.getElementById(catId);
-            if (!container) return;
-            container.innerHTML = items.map(q => {
-                const claimedF = state.claimed[q.id + '_f'] ? 'claimed' : '';
-                const claimedT = state.claimed[q.id + '_t'] ? 'claimed' : '';
-                return `
-                    <div class="quest-card">
-                        <div class="quest-info">
-                            <div class="quest-title">${q.text}</div>
-                            <div class="quest-pts">+${q.pts} pts</div>
-                        </div>
-                        <div class="claim-btns">
-                            <button class="claim-btn f ${claimedF}" onclick="claimQuest('${q.id}', 'f', ${q.pts})">F</button>
-                            <button class="claim-btn t ${claimedT}" onclick="claimQuest('${q.id}', 't', ${q.pts})">T</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderPacking() {
-            const container = document.getElementById('packing-list');
-            if (!container) return;
-            if (!state.packing) state.packing = {};
-            container.innerHTML = packingItems.map((item, idx) => {
-                const isChecked = state.packing[idx] ? 'checked' : '';
-                const isDone = state.packing[idx] ? 'done' : '';
-                return `
-                    <div class="check-item ${isDone}" onclick="togglePacking(${idx})">
-                        <input type="checkbox" ${isChecked} onclick="event.stopPropagation(); togglePacking(${idx});">
-                        <span>${item}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updateUI() {
-            document.getElementById('score-f').innerText = state.scoreF || 0;
-            document.getElementById('score-t').innerText = state.scoreT || 0;
-            renderCategory('sexy-quests', quests.sexy);
-            renderCategory('romantic-quests', quests.romantic);
-            renderCategory('trip-quests', quests.trip);
-            renderCategory('daily-quests', quests.daily);
-            renderPacking();
-        }
-
-        window.onload = function() {
-            updateUI();
-        };
-
-        // Firebase Sync
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyB9eIz3NKcOv6Jsb8dK_L7nbwDUZdqUHYY",
-                authDomain: "mexico-couples-game.firebaseapp.com",
-                databaseURL: "https://mexico-couples-game-default-rtdb.firebaseio.com",
-                projectId: "mexico-couples-game",
-                storageBucket: "mexico-couples-game.firebasestorage.app",
-                messagingSenderId: "500624164564",
-                appId: "1:500624164564:web:22fd2c6e68839a5877dd41"
-            };
-            firebase.initializeApp(firebaseConfig);
-            window.dbRef = firebase.database().ref('game_state');
-            window.dbRef.on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    state = data;
-                    if (!state.claimed) state.claimed = {};
-                    if (!state.packing) state.packing = {};
-                    localStorage.setItem('mexico_game_state', JSON.stringify(state));
-                    updateUI();
-                }
-            });
-        } catch(e) { console.log("Running offline mode."); }
-    </script>
+    // Initial Render
+    renderPhrases("all");
+  </script>
 </body>
 </html>
