@@ -48,7 +48,7 @@
             gap: 6px;
             overflow-x: auto;
             padding-bottom: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             -webkit-overflow-scrolling: touch;
         }
         .day-tab {
@@ -77,7 +77,7 @@
             background: var(--card-bg);
             border-radius: 14px;
             padding: 14px 16px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid var(--accent-teal);
         }
         .itinerary-title {
@@ -99,6 +99,89 @@
             font-weight: bold;
             min-width: 75px;
         }
+
+        /* Full Details Button */
+        .details-btn-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details-btn {
+            width: 100%;
+            background: rgba(0, 245, 212, 0.1);
+            border: 1px solid var(--accent-teal);
+            color: var(--accent-teal);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .details-btn:active {
+            background: rgba(0, 245, 212, 0.25);
+        }
+
+        /* Modal Details Popup */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-pink);
+            border-radius: 18px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 20px auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            cursor: pointer;
+        }
+        .modal-h2 {
+            color: var(--accent-gold);
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+        .modal-section {
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .modal-section h3 {
+            color: var(--accent-teal);
+            font-size: 14px;
+            margin: 0 0 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+        .info-row strong { color: var(--text-color); }
 
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .player-card {
@@ -171,6 +254,13 @@
     <!-- Daily Itinerary Container -->
     <div id="itinerary-display" class="itinerary-card"></div>
 
+    <!-- Full Itinerary Details Button -->
+    <div class="details-btn-container">
+        <button class="details-btn" onclick="toggleModal(true)">
+            📋 Itinerary, Contact Information & Details
+        </button>
+    </div>
+
     <div class="scoreboard">
         <div class="player-card">
             <div class="player-name">Francisco</div>
@@ -218,6 +308,43 @@
 
     <div class="reset-container">
         <button class="reset-btn" onclick="resetGame()">Reset Game Scores</button>
+    </div>
+
+    <!-- Modal Reference Guide Window -->
+    <div id="details-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="toggleModal(false)">✕</button>
+            <h2 class="modal-h2">🇲🇽 Trip Reference & Contacts</h2>
+
+            <div class="modal-section">
+                <h3>🏨 Resort Information</h3>
+                <div class="info-row"><span>Hotel:</span> <strong>El Dorado Royale</strong></div>
+                <div class="info-row"><span>Location:</span> <strong>Riviera Maya, Mexico</strong></div>
+                <div class="info-row"><span>Address:</span> <strong>Carretera Cancún - Tulum KM 45</strong></div>
+                <div class="info-row"><span>Front Desk Phone:</span> <strong>+52 998 872 8000</strong></div>
+                <div class="info-row"><span>Check-in / Out:</span> <strong>3:00 PM / 12:00 PM</strong></div>
+            </div>
+
+            <div class="modal-section">
+                <h3>💍 Wedding Details</h3>
+                <div class="info-row"><span>Ceremony:</span> <strong>Saturday @ 4:30 PM (Beach)</strong></div>
+                <div class="info-row"><span>Reception:</span> <strong>Saturday @ 6:00 PM</strong></div>
+                <div class="info-row"><span>Rehearsal:</span> <strong>Friday @ 7:00 PM</strong></div>
+            </div>
+
+            <div class="modal-section">
+                <h3>🚕 Transportation & Travel</h3>
+                <div class="info-row"><span>Airport:</span> <strong>Cancún International (CUN)</strong></div>
+                <div class="info-row"><span>Transfer Co:</span> <strong>Lomas Travel Services</strong></div>
+                <div class="info-row"><span>Transfer Phone:</span> <strong>+52 998 881 9400</strong></div>
+            </div>
+
+            <div class="modal-section">
+                <h3>🍽 Group Dining Spot Schedule</h3>
+                <div class="info-row"><span>Thursday 8:30 PM:</span> <strong>Kampai (Asian)</strong></div>
+                <div class="info-row"><span>Sunday 7:00 PM:</span> <strong>Fuentes (Culinary Theatre)</strong></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -306,15 +433,12 @@
             const displayBox = document.getElementById('itinerary-display');
             const isActive = element.classList.contains('active');
 
-            // Reset all buttons
             document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
 
             if (isActive) {
-                // If it was already open, close it
                 displayBox.style.display = 'none';
                 displayBox.innerHTML = '';
             } else {
-                // Open the selected day
                 element.classList.add('active');
                 const data = itineraries[dayKey];
                 let html = `<div class="itinerary-title">${data.title}</div>`;
@@ -328,6 +452,10 @@
                 displayBox.innerHTML = html;
                 displayBox.style.display = 'block';
             }
+        }
+
+        function toggleModal(show) {
+            document.getElementById('details-modal').style.display = show ? 'block' : 'none';
         }
 
         function adjustScore(player, val) {
