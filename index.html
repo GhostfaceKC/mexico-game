@@ -181,7 +181,7 @@
             margin-bottom: 4px;
             color: var(--text-muted);
         }
-        .info-row strong { color: var(--text-color); }
+        .info-row strong { color: var(--text-color); text-align: right; }
 
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .player-card {
@@ -257,7 +257,7 @@
     <!-- Full Itinerary Details Button -->
     <div class="details-btn-container">
         <button class="details-btn" onclick="toggleModal(true)">
-            📋 Itinerary, Contact Information & Details
+            📋 Flight, Hotel & Contact Information
         </button>
     </div>
 
@@ -314,7 +314,17 @@
     <div id="details-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="toggleModal(false)">✕</button>
-            <h2 class="modal-h2">🇲🇽 Trip Reference & Contacts</h2>
+            <h2 class="modal-h2">🇲🇽 Flight & Reference Guide</h2>
+
+            <div class="modal-section">
+                <h3>✈️ Southwest Flight Details</h3>
+                <div class="info-row"><span>Confirmation #:</span> <strong>CBNUX4</strong></div>
+                <div class="info-row"><span>Passengers:</span> <strong>Francisco & Tiffany Diaz</strong></div>
+                <div class="info-row"><span>Departing (Thu Aug 6):</span> <strong>MCI 08:25 AM ➔ CUN 01:30 PM</strong></div>
+                <div class="info-row"><span>Flight #:</span> <strong>#2008 / #1995 (Stop: St. Louis)</strong></div>
+                <div class="info-row"><span>Returning (Mon Aug 10):</span> <strong>CUN 05:05 PM ➔ MCI 10:55 PM</strong></div>
+                <div class="info-row"><span>Flight #:</span> <strong>#308 / #3709 (Stop: Houston)</strong></div>
+            </div>
 
             <div class="modal-section">
                 <h3>🏨 Resort Information</h3>
@@ -333,14 +343,13 @@
             </div>
 
             <div class="modal-section">
-                <h3>🚕 Transportation & Travel</h3>
-                <div class="info-row"><span>Airport:</span> <strong>Cancún International (CUN)</strong></div>
+                <h3>🚕 Airport Transfers</h3>
                 <div class="info-row"><span>Transfer Co:</span> <strong>Lomas Travel Services</strong></div>
-                <div class="info-row"><span>Transfer Phone:</span> <strong>+52 998 881 9400</strong></div>
+                <div class="info-row"><span>Phone:</span> <strong>+52 998 881 9400</strong></div>
             </div>
 
             <div class="modal-section">
-                <h3>🍽 Group Dining Spot Schedule</h3>
+                <h3>🍽 Group Dining Spots</h3>
                 <div class="info-row"><span>Thursday 8:30 PM:</span> <strong>Kampai (Asian)</strong></div>
                 <div class="info-row"><span>Sunday 7:00 PM:</span> <strong>Fuentes (Culinary Theatre)</strong></div>
             </div>
@@ -352,38 +361,42 @@
             thu: {
                 title: "Thursday • Arrival & Welcome",
                 items: [
-                    { time: "Afternoon", text: "Resort check-in & room setup" },
-                    { time: "7:30 PM", text: "Welcome Drinks at Guacamayas Lobby Bar" },
-                    { time: "8:30 PM", text: "Group Dinner at Kampai" }
+                    { time: "08:25 AM", text: "Flight departs MCI (Southwest #2008 / #1995)" },
+                    { time: "01:30 PM", text: "Arrive at CUN Airport 🇲🇽" },
+                    { time: "03:00 PM", text: "Resort check-in & room setup" },
+                    { time: "07:30 PM", text: "Welcome Drinks at Guacamayas Lobby Bar" },
+                    { time: "08:30 PM", text: "Group Dinner at Kampai" }
                 ]
             },
             fri: {
                 title: "Friday • Pool & Pre-Wedding Fiesta",
                 items: [
                     { time: "Daytime", text: "Free resort & pool time with the group" },
-                    { time: "7:00 PM", text: "Rehearsal Dinner / Pre-Wedding Event" }
+                    { time: "07:00 PM", text: "Rehearsal Dinner / Pre-Wedding Event" }
                 ]
             },
             sat: {
                 title: "Saturday • Wedding Day! 🎉",
                 items: [
                     { time: "Morning", text: "Resort relaxation & getting ready" },
-                    { time: "4:30 PM", text: "Beach Wedding Ceremony 💍" },
-                    { time: "6:00 PM", text: "Cocktail Hour & Wedding Reception" }
+                    { time: "04:30 PM", text: "Beach Wedding Ceremony 💍" },
+                    { time: "06:00 PM", text: "Cocktail Hour & Wedding Reception" }
                 ]
             },
             sun: {
                 title: "Sunday • Recovery & Relax",
                 items: [
                     { time: "Daytime", text: "Post-wedding pool chill / Free day" },
-                    { time: "7:00 PM", text: "Farewell Group Dinner at Fuentes" }
+                    { time: "07:00 PM", text: "Farewell Group Dinner at Fuentes" }
                 ]
             },
             mon: {
                 title: "Monday • Departure",
                 items: [
-                    { time: "Morning", text: "Breakfast & checkout" },
-                    { time: "Midday", text: "Shuttle transfer to CUN Airport" }
+                    { time: "Morning", text: "Breakfast & resort checkout" },
+                    { time: "02:00 PM", text: "Shuttle transfer to CUN Airport" },
+                    { time: "05:05 PM", text: "Flight departs CUN (Southwest #308 / #3709)" },
+                    { time: "10:55 PM", text: "Arrive back home at MCI" }
                 ]
             }
         };
