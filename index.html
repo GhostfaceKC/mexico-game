@@ -32,7 +32,7 @@
 
         .header { text-align: center; padding: 10px 0 20px; }
         .header h1 {
-            font-size: 28px; 
+            font-size: 26px; 
             margin: 0;
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-gold));
             -webkit-background-clip: text;
@@ -40,7 +40,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .header p { color: var(--text-muted); font-size: 15px; margin-top: 6px; }
+        .header p { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
 
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .player-card {
@@ -70,7 +70,7 @@
             gap: 12px; border-left: 5px solid var(--accent-pink);
         }
         .quest-info { flex: 1; }
-        .quest-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+        .quest-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
         .quest-pts { font-size: 13px; color: var(--accent-gold); font-weight: bold; }
 
         .claim-btns { display: flex; gap: 8px; }
@@ -98,7 +98,7 @@
 
     <div class="header">
         <h1>🇲🇽 Passion in Paradise</h1>
-        <p>El Dorado Royale • Live Sync Couple Challenge</p>
+        <p>El Dorado Royale • 5-Day Couple Challenge</p>
     </div>
 
     <div class="scoreboard">
@@ -129,6 +129,9 @@
     <div class="section-title">🍹 Wedding & Resort Fun</div>
     <div id="trip-quests"></div>
 
+    <div class="section-title">📆 Daily 5-Day Missions</div>
+    <div id="daily-quests"></div>
+
     <div class="section-title">🏆 Joint Rewards Unlocked</div>
     <div class="reward-card">
         <div class="reward-title">🔒 Combined Score: 100 Pts</div>
@@ -140,7 +143,7 @@
     </div>
     <div class="reward-card">
         <div class="reward-title">🔒 Combined Score: 400 Pts</div>
-        <div class="reward-desc">Winner Chooses a Secret Fantasy to Fulfill on Night 4</div>
+        <div class="reward-desc">Winner Chooses a Secret Fantasy to Fulfill on Night 4/5</div>
     </div>
 
     <div class="reset-container">
@@ -148,19 +151,6 @@
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB9eIz3NKcOv6Jsb8dK_L7nbwDUZdqUHYY",
-            authDomain: "mexico-couples-game.firebaseapp.com",
-            databaseURL: "https://mexico-couples-game-default-rtdb.firebaseio.com",
-            projectId: "mexico-couples-game",
-            storageBucket: "mexico-couples-game.firebasestorage.app",
-            messagingSenderId: "500624164564",
-            appId: "1:500624164564:web:22fd2c6e68839a5877dd41"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database().ref('game_state');
-
         const quests = {
             sexy: [
                 { id: 's1', text: 'Leave a seductive note on the bathroom mirror', pts: 15 },
@@ -168,36 +158,40 @@
                 { id: 's3', text: 'Order a surprise cocktail for your partner at the bar', pts: 10 },
                 { id: 's4', text: 'Initiate a passionate kiss under water in the pool/sea', pts: 25 },
                 { id: 's5', text: 'Late-night skinny dip or private hot tub session', pts: 35 },
-                { id: 's6', text: 'Steal your partner away from the group for 10 minutes alone', pts: 20 }
+                { id: 's6', text: 'Steal your partner away from the group for 10 minutes alone', pts: 20 },
+                { id: 's7', text: 'Give a 2-minute shoulder massage on a beach lounge chair', pts: 15 }
             ],
             romantic: [
                 { id: 'r1', text: 'Catch a full sunset together on the pier', pts: 15 },
                 { id: 'r2', text: 'Slow dance together when no music is playing', pts: 20 },
                 { id: 'r3', text: 'Take a romantic beach stroll holding hands at night', pts: 15 },
                 { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes or Cocotal', pts: 10 },
-                { id: 'r5', text: 'Take a golden-hour selfie together in formal dress', pts: 10 }
+                { id: 'r5', text: 'Take a golden-hour selfie together in formal dress', pts: 10 },
+                { id: 'r6', text: 'Order room service breakfast in bed', pts: 20 }
             ],
             trip: [
                 { id: 't1', text: 'Dance on the dance floor at the wedding reception', pts: 15 },
                 { id: 't2', text: 'Complete a cenote swim or catamaran snorkel excursion', pts: 25 },
-                { id: 't3', text: 'Drink a coconut or tropical cocktail on a beach lounge chair', pts: 10 },
-                { id: 't4', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 }
+                { id: 't3', text: 'Drink a coconut or tropical cocktail on a beach chair', pts: 10 },
+                { id: 't4', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 },
+                { id: 't5', text: 'Try a new Mexican tequila or mezcal tasting together', pts: 15 }
+            ],
+            daily: [
+                { id: 'd1', text: 'Day 1: Compliment your partner on their resort outfit', pts: 10 },
+                { id: 'd2', text: 'Day 2: Take a swim-up bar shot together', pts: 15 },
+                { id: 'd3', text: 'Day 3: Secretly touch your partner during a group photo', pts: 20 },
+                { id: 'd4', text: 'Day 4: Pick out swimwear for each other for the day', pts: 15 },
+                { id: 'd5', text: 'Day 5: Share your favorite trip memory over a final drink', pts: 20 }
             ]
         };
 
-        let state = { scoreF: 0, scoreT: 0, claimed: {} };
-
-        db.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                state = data;
-                if (!state.claimed) state.claimed = {};
-                updateUI();
-            }
-        });
+        // Local Storage State Management (Instant & Offline)
+        let state = JSON.parse(localStorage.getItem('mexico_game_state')) || { scoreF: 0, scoreT: 0, claimed: {} };
 
         function saveState() {
-            db.set(state);
+            localStorage.setItem('mexico_game_state', JSON.stringify(state));
+            updateUI();
+            if (window.dbRef) window.dbRef.set(state);
         }
 
         function adjustScore(player, val) {
@@ -222,6 +216,7 @@
 
         function renderCategory(catId, items) {
             const container = document.getElementById(catId);
+            if (!container) return;
             container.innerHTML = items.map(q => {
                 const claimedF = state.claimed[q.id + '_f'] ? 'claimed' : '';
                 const claimedT = state.claimed[q.id + '_t'] ? 'claimed' : '';
@@ -246,6 +241,7 @@
             renderCategory('sexy-quests', quests.sexy);
             renderCategory('romantic-quests', quests.romantic);
             renderCategory('trip-quests', quests.trip);
+            renderCategory('daily-quests', quests.daily);
         }
 
         function resetGame() {
@@ -254,6 +250,33 @@
                 saveState();
             }
         }
+
+        // Run UI instantly on load
+        updateUI();
+
+        // Optional Firebase Sync Attempt (silent failover so it never blocks UI)
+        try {
+            const firebaseConfig = {
+                apiKey: "AIzaSyB9eIz3NKcOv6Jsb8dK_L7nbwDUZdqUHYY",
+                authDomain: "mexico-couples-game.firebaseapp.com",
+                databaseURL: "https://mexico-couples-game-default-rtdb.firebaseio.com",
+                projectId: "mexico-couples-game",
+                storageBucket: "mexico-couples-game.firebasestorage.app",
+                messagingSenderId: "500624164564",
+                appId: "1:500624164564:web:22fd2c6e68839a5877dd41"
+            };
+            firebase.initializeApp(firebaseConfig);
+            window.dbRef = firebase.database().ref('game_state');
+            window.dbRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    state = data;
+                    if (!state.claimed) state.claimed = {};
+                    localStorage.setItem('mexico_game_state', JSON.stringify(state));
+                    updateUI();
+                }
+            });
+        } catch(e) { console.log("Running in offline mode."); }
     </script>
 </body>
 </html>
