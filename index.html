@@ -183,6 +183,39 @@
         }
         .info-row strong { color: var(--text-color); text-align: right; }
 
+        .quick-links-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .link-btn {
+            flex: 1;
+            background: rgba(255, 42, 117, 0.15);
+            border: 1px solid var(--accent-pink);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Checkbox List Styling */
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .check-item input { accent-color: var(--accent-pink); }
+        .check-item.done { opacity: 0.5; text-decoration: line-through; }
+
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .player-card {
             background: var(--card-bg);
@@ -257,7 +290,7 @@
     <!-- Full Itinerary Details Button -->
     <div class="details-btn-container">
         <button class="details-btn" onclick="toggleModal(true)">
-            📋 Flight, Hotel & Contact Information
+            📋 Flight, Hotel & Trip Reference Guide
         </button>
     </div>
 
@@ -314,22 +347,26 @@
     <div id="details-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" onclick="toggleModal(false)">✕</button>
-            <h2 class="modal-h2">🇲🇽 Flight & Reference Guide</h2>
+            <h2 class="modal-h2">🇲🇽 Trip Reference Guide</h2>
+
+            <div class="quick-links-group">
+                <a href="https://www.karismahotels.com/el-dorado-spa-resorts/el-dorado-royale" target="_blank" class="link-btn">🗺️ Resort Map</a>
+                <a href="https://photos.app.goo.gl" target="_blank" class="link-btn">📸 Shared Photos</a>
+            </div>
 
             <div class="modal-section">
                 <h3>✈️ Southwest Flight Details</h3>
                 <div class="info-row"><span>Confirmation #:</span> <strong>CBNUX4</strong></div>
                 <div class="info-row"><span>Passengers:</span> <strong>Francisco & Tiffany Diaz</strong></div>
                 <div class="info-row"><span>Departing (Thu Aug 6):</span> <strong>MCI 08:25 AM ➔ CUN 01:30 PM</strong></div>
-                <div class="info-row"><span>Flight #:</span> <strong>#2008 / #1995 (Stop: St. Louis)</strong></div>
+                <div class="info-row"><span>Flight #:</span> <strong>#2008 / #1995 (Stop: STL)</strong></div>
                 <div class="info-row"><span>Returning (Mon Aug 10):</span> <strong>CUN 05:05 PM ➔ MCI 10:55 PM</strong></div>
-                <div class="info-row"><span>Flight #:</span> <strong>#308 / #3709 (Stop: Houston)</strong></div>
+                <div class="info-row"><span>Flight #:</span> <strong>#308 / #3709 (Stop: HOU)</strong></div>
             </div>
 
             <div class="modal-section">
                 <h3>🏨 Resort Information</h3>
                 <div class="info-row"><span>Hotel:</span> <strong>El Dorado Royale</strong></div>
-                <div class="info-row"><span>Location:</span> <strong>Riviera Maya, Mexico</strong></div>
                 <div class="info-row"><span>Address:</span> <strong>Carretera Cancún - Tulum KM 45</strong></div>
                 <div class="info-row"><span>Front Desk Phone:</span> <strong>+52 998 872 8000</strong></div>
                 <div class="info-row"><span>Check-in / Out:</span> <strong>3:00 PM / 12:00 PM</strong></div>
@@ -343,15 +380,24 @@
             </div>
 
             <div class="modal-section">
-                <h3>🚕 Airport Transfers</h3>
-                <div class="info-row"><span>Transfer Co:</span> <strong>Lomas Travel Services</strong></div>
-                <div class="info-row"><span>Phone:</span> <strong>+52 998 881 9400</strong></div>
+                <h3>💵 Tipping Guide (USD / MXN)</h3>
+                <div class="info-row"><span>Airport Shuttle Driver:</span> <strong>$5 - $10 USD</strong></div>
+                <div class="info-row"><span>Bellhop / Luggage:</span> <strong>$2 - $5 USD</strong></div>
+                <div class="info-row"><span>Bartender (Per Round):</span> <strong>$1 - $2 USD ($20-$50 MXN)</strong></div>
+                <div class="info-row"><span>Housekeeping (Daily):</span> <strong>$3 - $5 USD</strong></div>
             </div>
 
             <div class="modal-section">
-                <h3>🍽 Group Dining Spots</h3>
-                <div class="info-row"><span>Thursday 8:30 PM:</span> <strong>Kampai (Asian)</strong></div>
-                <div class="info-row"><span>Sunday 7:00 PM:</span> <strong>Fuentes (Culinary Theatre)</strong></div>
+                <h3>🇲🇽 Flirty Spanish Phrasebook</h3>
+                <div class="info-row"><span>"Another drink please":</span> <strong>Otro drink, por favor</strong></div>
+                <div class="info-row"><span>"You look gorgeous":</span> <strong>Te ves hermosísima</strong></div>
+                <div class="info-row"><span>"Kiss me right now":</span> <strong>Bésame ahora mismo</strong></div>
+                <div class="info-row"><span>"Let's go back to the room":</span> <strong>Vamos al cuarto ya</strong></div>
+            </div>
+
+            <div class="modal-section">
+                <h3>🧳 Packing Checklist</h3>
+                <div id="packing-list"></div>
             </div>
         </div>
     </div>
@@ -401,6 +447,15 @@
             }
         };
 
+        const packingItems = [
+            "Passports & Driver's Licenses",
+            "Wedding Outfits & Formal Shoes",
+            "Swimwear & Beach Cover-ups",
+            "Reef-Safe Sunscreen & Sunglasses",
+            "Small Cash Bills ($1s & $5s for Tips)",
+            "Phone Chargers & Portable Battery"
+        ];
+
         const quests = {
             sexy: [
                 { id: 's1', text: 'Leave a seductive note on the bathroom mirror', pts: 15 },
@@ -434,7 +489,7 @@
             ]
         };
 
-        let state = JSON.parse(localStorage.getItem('mexico_game_state')) || { scoreF: 0, scoreT: 0, claimed: {} };
+        let state = JSON.parse(localStorage.getItem('mexico_game_state')) || { scoreF: 0, scoreT: 0, claimed: {}, packing: {} };
 
         function saveState() {
             localStorage.setItem('mexico_game_state', JSON.stringify(state));
@@ -469,6 +524,11 @@
 
         function toggleModal(show) {
             document.getElementById('details-modal').style.display = show ? 'block' : 'none';
+        }
+
+        function togglePacking(index) {
+            state.packing[index] = !state.packing[index];
+            saveState();
         }
 
         function adjustScore(player, val) {
@@ -512,6 +572,22 @@
             }).join('');
         }
 
+        function renderPacking() {
+            const container = document.getElementById('packing-list');
+            if (!container) return;
+            if (!state.packing) state.packing = {};
+            container.innerHTML = packingItems.map((item, idx) => {
+                const isChecked = state.packing[idx] ? 'checked' : '';
+                const isDone = state.packing[idx] ? 'done' : '';
+                return `
+                    <div class="check-item ${isDone}" onclick="togglePacking(${idx})">
+                        <input type="checkbox" ${isChecked} onclick="event.stopPropagation(); togglePacking(${idx});">
+                        <span>${item}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
         function updateUI() {
             document.getElementById('score-f').innerText = state.scoreF || 0;
             document.getElementById('score-t').innerText = state.scoreT || 0;
@@ -519,6 +595,7 @@
             renderCategory('romantic-quests', quests.romantic);
             renderCategory('trip-quests', quests.trip);
             renderCategory('daily-quests', quests.daily);
+            renderPacking();
         }
 
         window.onload = function() {
@@ -543,6 +620,7 @@
                 if (data) {
                     state = data;
                     if (!state.claimed) state.claimed = {};
+                    if (!state.packing) state.packing = {};
                     localStorage.setItem('mexico_game_state', JSON.stringify(state));
                     updateUI();
                 }
