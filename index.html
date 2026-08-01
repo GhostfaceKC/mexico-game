@@ -95,7 +95,7 @@
         .itinerary-time {
             color: var(--accent-gold);
             font-weight: bold;
-            min-width: 65px;
+            min-width: 75px;
         }
 
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
@@ -159,11 +159,11 @@
 
     <!-- Day Selector Tabs -->
     <div class="day-tabs">
-        <button class="day-tab active" onclick="switchDay('thu')">Thu</button>
-        <button class="day-tab" onclick="switchDay('fri')">Fri</button>
-        <button class="day-tab" onclick="switchDay('sat')">Sat (Wedding)</button>
-        <button class="day-tab" onclick="switchDay('sun')">Sun</button>
-        <button class="day-tab" onclick="switchDay('mon')">Mon</button>
+        <button class="day-tab active" onclick="switchDay('thu', this)">Thu</button>
+        <button class="day-tab" onclick="switchDay('fri', this)">Fri</button>
+        <button class="day-tab" onclick="switchDay('sat', this)">Sat (Wedding)</button>
+        <button class="day-tab" onclick="switchDay('sun', this)">Sun</button>
+        <button class="day-tab" onclick="switchDay('mon', this)">Mon</button>
     </div>
 
     <!-- Daily Itinerary Container -->
@@ -197,6 +197,9 @@
     <div class="section-title">🍹 Wedding & Resort Fun</div>
     <div id="trip-quests"></div>
 
+    <div class="section-title">📆 Daily 5-Day Missions</div>
+    <div id="daily-quests"></div>
+
     <div class="section-title">🏆 Joint Rewards Unlocked</div>
     <div class="reward-card">
         <div class="reward-title">🔒 Combined Score: 100 Pts</div>
@@ -216,49 +219,43 @@
     </div>
 
     <script>
+        // STRICT CONFIRMED ITINERARY ONLY
         const itineraries = {
             thu: {
                 title: "Thursday • Arrival & Welcome",
                 items: [
-                    { time: "Aft", text: "Resort check-in & welcome cocktails" },
-                    { time: "5:00 PM", text: "Unpack, chill, & sunset pool dip" },
+                    { time: "Afternoon", text: "Resort check-in & room setup" },
                     { time: "7:30 PM", text: "Welcome Drinks at Guacamayas Lobby Bar" },
-                    { time: "8:30 PM", text: "Casual Group Dinner at Kampai" }
+                    { time: "8:30 PM", text: "Group Dinner at Kampai" }
                 ]
             },
             fri: {
-                title: "Friday • Pool & Pre-Wedding Fun",
+                title: "Friday • Pool & Pre-Wedding Fiesta",
                 items: [
-                    { time: "9:00 AM", text: "Breakfast at Cocotal" },
-                    { time: "11:30 AM", text: "Swim-up Bar & Poolside Games" },
-                    { time: "3:00 PM", text: "Beach stroll or spa downtime" },
-                    { time: "7:00 PM", text: "Rehearsal Dinner / Fiesta Night" }
+                    { time: "Daytime", text: "Free resort & pool time with the group" },
+                    { time: "7:00 PM", text: "Rehearsal Dinner / Pre-Wedding Event" }
                 ]
             },
             sat: {
                 title: "Saturday • Wedding Day! 🎉",
                 items: [
-                    { time: "10:00 AM", text: "Lazy morning room service" },
-                    { time: "2:00 PM", text: "Get ready for ceremony" },
+                    { time: "Morning", text: "Resort relaxation & getting ready" },
                     { time: "4:30 PM", text: "Beach Wedding Ceremony 💍" },
-                    { time: "6:00 PM", text: "Cocktail Hour & Reception Party" }
+                    { time: "6:00 PM", text: "Cocktail Hour & Wedding Reception" }
                 ]
             },
             sun: {
-                title: "Sunday • Excursion & Recovery",
+                title: "Sunday • Recovery & Relax",
                 items: [
-                    { time: "10:30 AM", text: "Post-wedding brunch" },
-                    { time: "1:00 PM", text: "Catamaran / Cenote Excursion or Spa" },
-                    { time: "6:30 PM", text: "Sunset dinner on the pier" },
-                    { time: "9:00 PM", text: "Nighttime beachwalk & hot tub" }
+                    { time: "Daytime", text: "Post-wedding pool chill / Free day" },
+                    { time: "7:00 PM", text: "Farewell Group Dinner at Fuentes" }
                 ]
             },
             mon: {
-                title: "Monday • Farewell & Departure",
+                title: "Monday • Departure",
                 items: [
-                    { time: "9:00 AM", text: "Final tropical breakfast" },
-                    { time: "11:00 AM", text: "Pack up & souvenirs at the shop" },
-                    { time: "12:30 PM", text: "Airport shuttle checkout" }
+                    { time: "Morning", text: "Breakfast & checkout" },
+                    { time: "Midday", text: "Shuttle transfer to CUN Airport" }
                 ]
             }
         };
@@ -277,16 +274,22 @@
                 { id: 'r1', text: 'Catch a full sunset together on the pier', pts: 15 },
                 { id: 'r2', text: 'Slow dance together when no music is playing', pts: 20 },
                 { id: 'r3', text: 'Take a romantic beach stroll holding hands at night', pts: 15 },
-                { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes or Cocotal', pts: 10 },
+                { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes or Kampai', pts: 10 },
                 { id: 'r5', text: 'Take a golden-hour selfie together in formal dress', pts: 10 },
                 { id: 'r6', text: 'Order room service breakfast in bed', pts: 20 }
             ],
             trip: [
                 { id: 't1', text: 'Dance on the dance floor at the wedding reception', pts: 15 },
-                { id: 't2', text: 'Complete a cenote swim or catamaran snorkel excursion', pts: 25 },
-                { id: 't3', text: 'Drink a coconut or tropical cocktail on a beach chair', pts: 10 },
-                { id: 't4', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 },
-                { id: 't5', text: 'Try a new Mexican tequila or mezcal tasting together', pts: 15 }
+                { id: 't2', text: 'Drink a fresh coconut or tropical drink on a beach chair', pts: 10 },
+                { id: 't3', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 },
+                { id: 't4', text: 'Try a new Mexican tequila or mezcal tasting together', pts: 15 }
+            ],
+            daily: [
+                { id: 'd1', text: 'Day 1: Compliment your partner on their resort outfit', pts: 10 },
+                { id: 'd2', text: 'Day 2: Take a swim-up bar shot together', pts: 15 },
+                { id: 'd3', text: 'Day 3: Secretly touch your partner during a group photo', pts: 20 },
+                { id: 'd4', text: 'Day 4: Pick out swimwear for each other for the day', pts: 15 },
+                { id: 'd5', text: 'Day 5: Share your favorite trip memory over a final drink', pts: 20 }
             ]
         };
 
@@ -298,9 +301,11 @@
             if (window.dbRef) window.dbRef.set(state);
         }
 
-        function switchDay(dayKey) {
-            document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        function switchDay(dayKey, element) {
+            if (element) {
+                document.querySelectorAll('.day-tab').forEach(btn => btn.classList.remove('active'));
+                element.classList.add('active');
+            }
             
             const data = itineraries[dayKey];
             let html = `<div class="itinerary-title">${data.title}</div>`;
@@ -361,18 +366,14 @@
             renderCategory('sexy-quests', quests.sexy);
             renderCategory('romantic-quests', quests.romantic);
             renderCategory('trip-quests', quests.trip);
+            renderCategory('daily-quests', quests.daily);
         }
 
-        function resetGame() {
-            if (confirm("Reset scores and completed quests?")) {
-                state = { scoreF: 0, scoreT: 0, claimed: {} };
-                saveState();
-            }
-        }
-
-        // Initialize default view
-        switchDay('thu');
-        updateUI();
+        // Initialize UI instantly on load
+        window.onload = function() {
+            switchDay('thu', document.querySelector('.day-tab.active'));
+            updateUI();
+        };
 
         // Firebase Sync
         try {
