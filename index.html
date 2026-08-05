@@ -306,7 +306,7 @@
 
     <!-- Live Event Countdown Ticker -->
     <div class="countdown-ticker" id="countdown-ticker">
-        💍 Saturday Beach Wedding Countdown: Calculating...
+        ✈️ Flight to Cancun Countdown: Calculating...
     </div>
 
     <!-- Quick Action Bar -->
@@ -617,7 +617,7 @@
             }
         }
 
-        /* Fixed Accordion Toggle Function */
+        /* Accordion Toggle Function */
         function toggleAccordion(headerElement, contentId) {
             const content = document.getElementById(contentId);
             headerElement.classList.toggle('open');
@@ -739,20 +739,20 @@
             renderPacking();
         }
 
-        /* Countdown Timer */
+        /* Countdown Timer - Set to Thursday Flight Departure */
         function updateCountdown() {
-            const weddingDate = new Date('2026-08-08T16:30:00');
+            const flightDate = new Date('2026-08-06T08:25:00');
             const now = new Date();
-            const diff = weddingDate - now;
+            const diff = flightDate - now;
 
             const ticker = document.getElementById('countdown-ticker');
             if (diff <= 0) {
-                ticker.innerText = "💍 IT'S WEDDING DAY! 🎉";
+                ticker.innerText = "✈️ FLIGHT TIME! MEXICO BOUND! 🇲🇽🎉";
             } else {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
                 const mins = Math.floor((diff / 1000 / 60) % 60);
-                ticker.innerText = `💍 Beach Wedding Countdown: ${days}d ${hours}h ${mins}m`;
+                ticker.innerText = `✈️ Flight to Cancun Countdown: ${days}d ${hours}h ${mins}m`;
             }
         }
 
