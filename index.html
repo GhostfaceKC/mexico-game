@@ -317,14 +317,18 @@
     <div class="section-title" style="color: var(--accent-gold);">👑 100-Pt Legendary Challenges</div>
     <div id="legendary-quests"></div>
 
-    <div class="section-title">😈 Side Bets & Penalties</div>
+    <div class="section-title">😈 All-Inclusive Side Bets & Penalties</div>
     <div class="penalty-card">
-        <div class="penalty-title">💥 Bails on a Legendary Dare</div>
-        <div style="font-size: 13px; color: var(--text-muted);">Must buy the next round of top-shelf drinks & rub partner's feet for 5 mins.</div>
+        <div class="penalty-title">🍹 Personal Swim-Up Bartender</div>
+        <div style="font-size: 13px; color: var(--text-muted);">Bails on a Legendary Dare? Must run all swim-up bar drink orders for your spouse for the next 3 hours!</div>
     </div>
     <div class="penalty-card">
-        <div class="penalty-title">🏆 Lowest Daily Score at Midnight</div>
-        <div style="font-size: 13px; color: var(--text-muted);">Must let the daily winner pick out your pool outfit for the next morning!</div>
+        <div class="penalty-title">🏖️ Bali Daybed Concierge</div>
+        <div style="font-size: 13px; color: var(--text-muted);">Lowest Daily Score at Midnight? Must wake up 15 minutes early to claim and set up prime shaded beach daybeds with towels.</div>
+    </div>
+    <div class="penalty-card">
+        <div class="penalty-title">🍕 2 AM Room Service Butler</div>
+        <div style="font-size: 13px; color: var(--text-muted);">Lose a daily challenge? Must place the late-night room service order, wait for the door, and set up the balcony spread.</div>
     </div>
 
     <div class="section-title">🏆 Joint Rewards Unlocked</div>
@@ -476,36 +480,38 @@
         const quests = {
             sexy: [
                 { id: 's1', text: 'Leave a seductive note on the bathroom mirror', pts: 15 },
-                { id: 's2', text: 'Whisper a spicy secret during dinner', pts: 20 },
-                { id: 's3', text: 'Order a surprise cocktail for your partner at the bar', pts: 10 },
-                { id: 's4', text: 'Initiate a passionate kiss under water in the pool/sea', pts: 25 },
-                { id: 's5', text: 'Late-night skinny dip or private hot tub session', pts: 35 },
+                { id: 's2', text: 'Whisper a spicy secret during dinner at Kampai or Fuentes', pts: 20 },
+                { id: 's3', text: 'Order a surprise signature cocktail for your partner at Guacamayas', pts: 10 },
+                { id: 's4', text: 'Initiate a passionate kiss under water in the main pool or sea', pts: 25 },
+                { id: 's5', text: 'Late-night skinny dip or private Jacuzzi session in the room', pts: 35 },
                 { id: 's6', text: 'Steal your partner away from the group for 10 minutes alone', pts: 20 },
-                { id: 's7', text: 'Give a 2-minute shoulder massage on a beach lounge chair', pts: 15 }
+                { id: 's7', text: 'Give a 2-minute shoulder massage on a beach lounge daybed', pts: 15 }
             ],
             romantic: [
-                { id: 'r1', text: 'Catch a full sunset together on the pier', pts: 15 },
-                { id: 'r2', text: 'Slow dance together when no music is playing', pts: 20 },
-                { id: 'r3', text: 'Take a romantic beach stroll holding hands at night', pts: 15 },
-                { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes or Kampai', pts: 10 },
-                { id: 'r5', text: 'Take a golden-hour selfie together in formal dress', pts: 10 },
-                { id: 'r6', text: 'Order room service breakfast in bed', pts: 20 }
+                { id: 'r1', text: 'Catch a full sunset together on the resort pier', pts: 15 },
+                { id: 'r2', text: 'Slow dance together on the beach when no music is playing', pts: 20 },
+                { id: 'r3', text: 'Take a romantic beach stroll holding hands under the stars', pts: 15 },
+                { id: 'r4', text: 'Feed each other a bite during dinner at Fuentes Culinary Theatre', pts: 10 },
+                { id: 'r5', text: 'Take a golden-hour selfie together in formal resort wear', pts: 10 },
+                { id: 'r6', text: 'Order 2 AM room service breakfast in bed', pts: 20 },
+                { id: 'r7', text: 'Take a romantic kiss photo inside the resort hydroponic greenhouse', pts: 25 }
             ],
             trip: [
-                { id: 't1', text: 'Dance on the dance floor at the wedding reception', pts: 15 },
-                { id: 't2', text: 'Drink a fresh coconut or tropical drink on a beach chair', pts: 10 },
+                { id: 't1', text: 'Dance on the dance floor at the Saturday beach wedding reception', pts: 15 },
+                { id: 't2', text: 'Track down the resort coconut station and drink fresh coconuts', pts: 15 },
                 { id: 't3', text: 'Toast with drinks at the Thursday Lobby Welcome night', pts: 10 },
-                { id: 't4', text: 'Try a new Mexican tequila or mezcal tasting together', pts: 15 }
+                { id: 't4', text: 'Complete a 3-stop swim-up bar crawl in a single afternoon', pts: 30 },
+                { id: 't5', text: 'Get on the dance floor at Rick\'s Bar/Nightclub', pts: 25 }
             ],
             daily: [
                 { id: 'd1', text: 'Day 1: Compliment your partner on their resort outfit', pts: 10 },
                 { id: 'd2', text: 'Day 2: Take a swim-up bar shot together', pts: 15 },
-                { id: 'd3', text: 'Day 3: Secretly touch your partner during a group photo', pts: 20 },
-                { id: 'd4', text: 'Day 4: Pick out swimwear for each other for the day', pts: 15 },
-                { id: 'd5', text: 'Day 5: Share your favorite trip memory over a final drink', pts: 20 }
+                { id: 'd3', text: 'Day 3: Secretly touch your partner during a group wedding photo', pts: 20 },
+                { id: 'd4', text: 'Day 4: Pick out swimwear/outfits for each other for the day', pts: 15 },
+                { id: 'd5', text: 'Day 5: Share your favorite trip memory over a final beach drink', pts: 20 }
             ],
             legendary: [
-                { id: 'l1', text: 'Go dance with an elderly stranger', pts: 100, isLegendary: true },
+                { id: 'l1', text: 'Go dance with an elderly stranger at the resort or wedding', pts: 100, isLegendary: true },
                 { id: 'l2', text: 'Go dance with a stranger or group of strangers selected by your spouse', pts: 100, isLegendary: true }
             ]
         };
