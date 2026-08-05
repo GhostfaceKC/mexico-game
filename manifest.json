@@ -1,0 +1,16 @@
+{
+  "name": "Passion in Paradise",
+  "short_name": "Mexico Game",
+  "description": "El Dorado Royale Couple's Challenge",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#120b18",
+  "theme_color": "#120b18",
+  "icons": [
+    {
+      "src": "https://fav.farm/🇲🇽",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
