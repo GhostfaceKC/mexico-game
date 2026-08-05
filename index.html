@@ -204,9 +204,9 @@
 
         /* Accordion Category Headers */
         .accordion-header {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: bold;
-            margin-top: 16px;
+            margin-top: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -234,6 +234,7 @@
             font-size: 16px;
             transition: transform 0.3s ease;
             color: var(--text-muted);
+            display: inline-block;
         }
         .accordion-header.open .arrow {
             transform: rotate(90deg);
@@ -244,6 +245,9 @@
         .accordion-content {
             display: none;
             padding-top: 12px;
+        }
+        .accordion-content.open {
+            display: block;
         }
 
         .quest-card {
@@ -613,18 +617,11 @@
             }
         }
 
-        /* Accordion Toggle Logic */
+        /* Fixed Accordion Toggle Function */
         function toggleAccordion(headerElement, contentId) {
             const content = document.getElementById(contentId);
-            const isOpen = content.style.display === 'block';
-
-            if (isOpen) {
-                content.style.display = 'none';
-                headerElement.classList.remove('open');
-            } else {
-                content.style.display = 'block';
-                headerElement.classList.add('open');
-            }
+            headerElement.classList.toggle('open');
+            content.classList.toggle('open');
         }
 
         function toggleDay(dayKey, element) {
