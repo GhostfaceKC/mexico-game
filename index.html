@@ -36,7 +36,7 @@
             color: var(--text-color);
             margin: 0;
             padding: 16px;
-            font-size: 18px; /* Boosted base font size */
+            font-size: 18px;
             box-sizing: border-box;
             -webkit-user-select: none;
             line-height: 1.5;
@@ -44,7 +44,7 @@
 
         .header { text-align: center; padding: 10px 0 12px; }
         .header h1 {
-            font-size: 30px; /* Larger title */
+            font-size: 30px;
             margin: 0;
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-gold));
             -webkit-background-clip: text;
@@ -185,7 +185,7 @@
         .check-item input { accent-color: var(--accent-pink); transform: scale(1.2); }
         .check-item.done { opacity: 0.5; text-decoration: line-through; }
 
-        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
         .player-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 42, 117, 0.4);
@@ -202,9 +202,48 @@
         }
         .score-btn:active { background: var(--accent-pink); }
 
-        .section-title {
-            font-size: 20px; font-weight: bold; margin: 28px 0 14px;
-            display: flex; align-items: center; gap: 8px; color: var(--accent-teal);
+        /* Accordion Category Headers */
+        .accordion-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--accent-teal);
+            background: var(--card-bg);
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 245, 212, 0.3);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+        .accordion-header:active {
+            background: rgba(0, 245, 212, 0.15);
+        }
+        .accordion-header.legendary-header {
+            color: var(--accent-gold);
+            border-color: rgba(255, 183, 3, 0.4);
+        }
+        .accordion-header.penalty-header {
+            color: var(--accent-pink);
+            border-color: rgba(255, 42, 117, 0.4);
+        }
+        .accordion-header .arrow {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+        .accordion-header.open .arrow {
+            transform: rotate(90deg);
+            color: var(--accent-gold);
+        }
+
+        /* Accordion Content Container */
+        .accordion-content {
+            display: none;
+            padding-top: 12px;
         }
 
         .quest-card {
@@ -303,47 +342,89 @@
         </div>
     </div>
 
-    <div class="section-title">🔥 Flirty & Steamy Quests</div>
-    <div id="sexy-quests"></div>
-
-    <div class="section-title">🌅 Romantic Resort Moments</div>
-    <div id="romantic-quests"></div>
-
-    <div class="section-title">🍹 Wedding & Resort Fun</div>
-    <div id="trip-quests"></div>
-
-    <div class="section-title">📆 Daily 5-Day Missions</div>
-    <div id="daily-quests"></div>
-
-    <div class="section-title" style="color: var(--accent-gold);">👑 100-Pt Legendary Challenges</div>
-    <div id="legendary-quests"></div>
-
-    <div class="section-title">😈 All-Inclusive Side Bets & Penalties</div>
-    <div class="penalty-card">
-        <div class="penalty-title">🍹 Personal Swim-Up Bartender</div>
-        <div style="font-size: 15px; color: var(--text-muted);">Bails on a Legendary Dare? Must run all swim-up bar drink orders for your spouse for the next 3 hours!</div>
+    <!-- Collapsible Category 1 -->
+    <div class="accordion-header" onclick="toggleAccordion(this, 'wrapper-sexy')">
+        <span>🔥 Flirty & Steamy Quests</span>
+        <span class="arrow">▶</span>
     </div>
-    <div class="penalty-card">
-        <div class="penalty-title">🏖️ Bali Daybed Concierge</div>
-        <div style="font-size: 15px; color: var(--text-muted);">Lowest Daily Score at Midnight? Must wake up 15 minutes early to claim and set up prime shaded beach daybeds with towels.</div>
-    </div>
-    <div class="penalty-card">
-        <div class="penalty-title">🍕 2 AM Room Service Butler</div>
-        <div style="font-size: 15px; color: var(--text-muted);">Lose a daily challenge? Must place the late-night room service order, wait for the door, and set up the balcony spread.</div>
+    <div id="wrapper-sexy" class="accordion-content">
+        <div id="sexy-quests"></div>
     </div>
 
-    <div class="section-title">🏆 Joint Rewards Unlocked</div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 100 Pts</div>
-        <div class="reward-desc">Sunset Champagne Toast & Private Pool Kiss Session</div>
+    <!-- Collapsible Category 2 -->
+    <div class="accordion-header" onclick="toggleAccordion(this, 'wrapper-romantic')">
+        <span>🌅 Romantic Resort Moments</span>
+        <span class="arrow">▶</span>
     </div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 250 Pts</div>
-        <div class="reward-desc">Partner Massage with Tropical Oils in the Room</div>
+    <div id="wrapper-romantic" class="accordion-content">
+        <div id="romantic-quests"></div>
     </div>
-    <div class="reward-card">
-        <div class="reward-title">🔒 Combined Score: 400 Pts</div>
-        <div class="reward-desc">Winner Chooses a Secret Fantasy to Fulfill on Night 4/5</div>
+
+    <!-- Collapsible Category 3 -->
+    <div class="accordion-header" onclick="toggleAccordion(this, 'wrapper-trip')">
+        <span>🍹 Wedding & Resort Fun</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div id="wrapper-trip" class="accordion-content">
+        <div id="trip-quests"></div>
+    </div>
+
+    <!-- Collapsible Category 4 -->
+    <div class="accordion-header" onclick="toggleAccordion(this, 'wrapper-daily')">
+        <span>📆 Daily 5-Day Missions</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div id="wrapper-daily" class="accordion-content">
+        <div id="daily-quests"></div>
+    </div>
+
+    <!-- Collapsible Category 5 -->
+    <div class="accordion-header legendary-header" onclick="toggleAccordion(this, 'wrapper-legendary')">
+        <span>👑 100-Pt Legendary Challenges</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div id="wrapper-legendary" class="accordion-content">
+        <div id="legendary-quests"></div>
+    </div>
+
+    <!-- Collapsible Category 6 -->
+    <div class="accordion-header penalty-header" onclick="toggleAccordion(this, 'wrapper-penalties')">
+        <span>😈 Side Bets & Penalties</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div id="wrapper-penalties" class="accordion-content">
+        <div class="penalty-card">
+            <div class="penalty-title">🍹 Personal Swim-Up Bartender</div>
+            <div style="font-size: 15px; color: var(--text-muted);">Bails on a Legendary Dare? Must run all swim-up bar drink orders for your spouse for the next 3 hours!</div>
+        </div>
+        <div class="penalty-card">
+            <div class="penalty-title">🏖️ Bali Daybed Concierge</div>
+            <div style="font-size: 15px; color: var(--text-muted);">Lowest Daily Score at Midnight? Must wake up 15 minutes early to claim and set up prime shaded beach daybeds with towels.</div>
+        </div>
+        <div class="penalty-card">
+            <div class="penalty-title">🍕 2 AM Room Service Butler</div>
+            <div style="font-size: 15px; color: var(--text-muted);">Lose a daily challenge? Must place the late-night room service order, wait for the door, and set up the balcony spread.</div>
+        </div>
+    </div>
+
+    <!-- Collapsible Category 7 -->
+    <div class="accordion-header legendary-header" onclick="toggleAccordion(this, 'wrapper-rewards')">
+        <span>🏆 Joint Rewards Unlocked</span>
+        <span class="arrow">▶</span>
+    </div>
+    <div id="wrapper-rewards" class="accordion-content">
+        <div class="reward-card">
+            <div class="reward-title">🔒 Combined Score: 100 Pts</div>
+            <div class="reward-desc">Sunset Champagne Toast & Private Pool Kiss Session</div>
+        </div>
+        <div class="reward-card">
+            <div class="reward-title">🔒 Combined Score: 250 Pts</div>
+            <div class="reward-desc">Partner Massage with Tropical Oils in the Room</div>
+        </div>
+        <div class="reward-card">
+            <div class="reward-title">🔒 Combined Score: 400 Pts</div>
+            <div class="reward-desc">Winner Chooses a Secret Fantasy to Fulfill on Night 4/5</div>
+        </div>
     </div>
 
     <div class="reset-container">
@@ -529,6 +610,20 @@
             if (confirm("Are you sure you want to reset all scores and claimed missions?")) {
                 state = { scoreF: 0, scoreT: 0, claimed: {}, packing: {} };
                 saveState();
+            }
+        }
+
+        /* Accordion Toggle Logic */
+        function toggleAccordion(headerElement, contentId) {
+            const content = document.getElementById(contentId);
+            const isOpen = content.style.display === 'block';
+
+            if (isOpen) {
+                content.style.display = 'none';
+                headerElement.classList.remove('open');
+            } else {
+                content.style.display = 'block';
+                headerElement.classList.add('open');
             }
         }
 
