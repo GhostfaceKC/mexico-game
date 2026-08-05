@@ -36,14 +36,15 @@
             color: var(--text-color);
             margin: 0;
             padding: 16px;
-            font-size: 16px;
+            font-size: 18px; /* Boosted base font size */
             box-sizing: border-box;
             -webkit-user-select: none;
+            line-height: 1.5;
         }
 
-        .header { text-align: center; padding: 10px 0 10px; }
+        .header { text-align: center; padding: 10px 0 12px; }
         .header h1 {
-            font-size: 26px; 
+            font-size: 30px; /* Larger title */
             margin: 0;
             background: linear-gradient(45deg, var(--accent-pink), var(--accent-gold));
             -webkit-background-clip: text;
@@ -51,35 +52,35 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+        .header p { color: var(--text-muted); font-size: 16px; margin-top: 6px; }
 
         /* Countdown Ticker */
         .countdown-ticker {
             background: rgba(255, 183, 3, 0.12);
             border: 1px solid var(--accent-gold);
             border-radius: 12px;
-            padding: 8px 12px;
+            padding: 10px 14px;
             text-align: center;
-            font-size: 13px;
+            font-size: 15px;
             color: var(--accent-gold);
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         /* Action Bar */
         .action-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 18px;
         }
         .action-btn {
             flex: 1;
             background: rgba(0, 245, 212, 0.12);
             border: 1px solid var(--accent-teal);
             color: var(--accent-teal);
-            padding: 10px;
+            padding: 12px;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
@@ -89,19 +90,19 @@
         /* Day Navigation Tabs */
         .day-tabs {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
             -webkit-overflow-scrolling: touch;
         }
         .day-tab {
             background: var(--card-bg);
             border: 1px solid rgba(255, 42, 117, 0.3);
             color: var(--text-muted);
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
             white-space: nowrap;
             cursor: pointer;
@@ -120,13 +121,13 @@
             display: none;
             background: var(--card-bg);
             border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 15px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
             border: 1px solid var(--accent-teal);
         }
-        .itinerary-title { font-size: 16px; font-weight: bold; color: var(--accent-teal); margin-bottom: 8px; }
-        .itinerary-item { font-size: 14px; color: var(--text-color); margin-bottom: 6px; line-height: 1.4; display: flex; gap: 8px; }
-        .itinerary-time { color: var(--accent-gold); font-weight: bold; min-width: 75px; }
+        .itinerary-title { font-size: 18px; font-weight: bold; color: var(--accent-teal); margin-bottom: 10px; }
+        .itinerary-item { font-size: 16px; color: var(--text-color); margin-bottom: 8px; line-height: 1.4; display: flex; gap: 10px; }
+        .itinerary-time { color: var(--accent-gold); font-weight: bold; min-width: 85px; }
 
         /* Modal Details Popup */
         .modal-overlay {
@@ -143,7 +144,7 @@
             background: var(--card-bg);
             border: 1px solid var(--accent-pink);
             border-radius: 18px;
-            padding: 20px;
+            padding: 22px;
             max-width: 500px;
             margin: 20px auto;
             position: relative;
@@ -154,75 +155,75 @@
             background: rgba(255,255,255,0.1);
             border: none;
             color: #fff;
-            font-size: 18px;
+            font-size: 20px;
             border-radius: 50%;
-            width: 32px; height: 32px;
+            width: 36px; height: 36px;
             cursor: pointer;
         }
         .modal-h2 {
             color: var(--accent-gold);
-            font-size: 18px;
+            font-size: 20px;
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 8px;
         }
-        .modal-section { margin-bottom: 16px; font-size: 14px; line-height: 1.5; }
-        .modal-section h3 { color: var(--accent-teal); font-size: 14px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); gap: 8px; }
+        .modal-section { margin-bottom: 18px; font-size: 15px; line-height: 1.5; }
+        .modal-section h3 { color: var(--accent-teal); font-size: 16px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--text-muted); gap: 10px; font-size: 15px; }
         .info-row strong { color: var(--text-color); text-align: right; }
 
-        .quick-links-group { display: flex; gap: 10px; margin-bottom: 16px; }
+        .quick-links-group { display: flex; gap: 10px; margin-bottom: 18px; }
         .link-btn {
             flex: 1; background: rgba(255, 42, 117, 0.15); border: 1px solid var(--accent-pink);
-            color: #fff; text-align: center; padding: 10px; border-radius: 10px;
-            text-decoration: none; font-size: 12px; font-weight: bold;
+            color: #fff; text-align: center; padding: 12px; border-radius: 10px;
+            text-decoration: none; font-size: 14px; font-weight: bold;
         }
 
         /* Checkbox List Styling */
-        .check-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 13px; cursor: pointer; }
-        .check-item input { accent-color: var(--accent-pink); }
+        .check-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 15px; cursor: pointer; }
+        .check-item input { accent-color: var(--accent-pink); transform: scale(1.2); }
         .check-item.done { opacity: 0.5; text-decoration: line-through; }
 
-        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
         .player-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 42, 117, 0.4);
-            border-radius: 18px; padding: 16px; text-align: center;
+            border-radius: 18px; padding: 18px; text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .player-name { font-size: 18px; font-weight: bold; color: var(--accent-gold); margin-bottom: 4px; }
-        .player-score { font-size: 38px; font-weight: 800; color: var(--text-color); margin: 6px 0; }
+        .player-name { font-size: 20px; font-weight: bold; color: var(--accent-gold); margin-bottom: 4px; }
+        .player-score { font-size: 44px; font-weight: 800; color: var(--text-color); margin: 6px 0; }
 
-        .score-btn-group { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+        .score-btn-group { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
         .score-btn {
             background: rgba(255, 255, 255, 0.12); border: none; color: var(--text-color);
-            padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer;
+            padding: 10px 16px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;
         }
         .score-btn:active { background: var(--accent-pink); }
 
         .section-title {
-            font-size: 18px; font-weight: bold; margin: 24px 0 12px;
+            font-size: 20px; font-weight: bold; margin: 28px 0 14px;
             display: flex; align-items: center; gap: 8px; color: var(--accent-teal);
         }
 
         .quest-card {
-            background: var(--card-bg); border-radius: 14px; padding: 14px 16px;
-            margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
-            gap: 12px; border-left: 5px solid var(--accent-pink);
+            background: var(--card-bg); border-radius: 14px; padding: 16px 18px;
+            margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
+            gap: 14px; border-left: 6px solid var(--accent-pink);
         }
         .quest-card.legendary-card {
-            border-left: 5px solid var(--accent-gold);
-            background: linear-gradient(135deg, rgba(255,183,3,0.1), var(--card-bg));
+            border-left: 6px solid var(--accent-gold);
+            background: linear-gradient(135deg, rgba(255,183,3,0.12), var(--card-bg));
         }
         .quest-info { flex: 1; }
-        .quest-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
-        .quest-pts { font-size: 13px; color: var(--accent-gold); font-weight: bold; }
+        .quest-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
+        .quest-pts { font-size: 15px; color: var(--accent-gold); font-weight: bold; }
 
-        .claim-btns { display: flex; gap: 6px; align-items: center; }
+        .claim-btns { display: flex; gap: 8px; align-items: center; }
         .claim-btn {
-            border: none; border-radius: 8px; padding: 8px 12px;
-            font-size: 13px; font-weight: bold; color: #fff; cursor: pointer; opacity: 0.85;
+            border: none; border-radius: 10px; padding: 10px 15px;
+            font-size: 15px; font-weight: bold; color: #fff; cursor: pointer; opacity: 0.85;
         }
         .claim-btn.f { background: #7b2cbf; }
         .claim-btn.t { background: #ff2a75; }
@@ -230,27 +231,27 @@
 
         .proof-btn {
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; border-radius: 8px; padding: 8px; font-size: 13px; text-decoration: none;
+            color: #fff; border-radius: 10px; padding: 10px 12px; font-size: 15px; text-decoration: none;
             display: inline-flex; align-items: center; justify-content: center;
         }
 
         .reward-card {
             background: linear-gradient(135deg, rgba(255,183,3,0.18), rgba(255,42,117,0.18));
             border: 1px dashed var(--accent-gold); border-radius: 14px;
-            padding: 14px 16px; margin-bottom: 12px; text-align: center;
+            padding: 16px 18px; margin-bottom: 14px; text-align: center;
         }
-        .reward-title { font-size: 16px; font-weight: bold; color: var(--accent-gold); }
-        .reward-desc { font-size: 14px; color: var(--text-muted); margin-top: 6px; line-height: 1.3; }
+        .reward-title { font-size: 18px; font-weight: bold; color: var(--accent-gold); }
+        .reward-desc { font-size: 15px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
 
         .penalty-card {
             background: rgba(255, 42, 117, 0.1);
             border: 1px solid var(--accent-pink);
-            border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+            border-radius: 14px; padding: 16px 18px; margin-bottom: 14px;
         }
-        .penalty-title { font-size: 15px; font-weight: bold; color: var(--accent-pink); margin-bottom: 6px; }
+        .penalty-title { font-size: 17px; font-weight: bold; color: var(--accent-pink); margin-bottom: 6px; }
 
-        .reset-container { text-align: center; margin: 35px 0 15px; }
-        .reset-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 10px 20px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+        .reset-container { text-align: center; margin: 40px 0 20px; }
+        .reset-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 12px 24px; border-radius: 20px; font-size: 14px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -320,15 +321,15 @@
     <div class="section-title">😈 All-Inclusive Side Bets & Penalties</div>
     <div class="penalty-card">
         <div class="penalty-title">🍹 Personal Swim-Up Bartender</div>
-        <div style="font-size: 13px; color: var(--text-muted);">Bails on a Legendary Dare? Must run all swim-up bar drink orders for your spouse for the next 3 hours!</div>
+        <div style="font-size: 15px; color: var(--text-muted);">Bails on a Legendary Dare? Must run all swim-up bar drink orders for your spouse for the next 3 hours!</div>
     </div>
     <div class="penalty-card">
         <div class="penalty-title">🏖️ Bali Daybed Concierge</div>
-        <div style="font-size: 13px; color: var(--text-muted);">Lowest Daily Score at Midnight? Must wake up 15 minutes early to claim and set up prime shaded beach daybeds with towels.</div>
+        <div style="font-size: 15px; color: var(--text-muted);">Lowest Daily Score at Midnight? Must wake up 15 minutes early to claim and set up prime shaded beach daybeds with towels.</div>
     </div>
     <div class="penalty-card">
         <div class="penalty-title">🍕 2 AM Room Service Butler</div>
-        <div style="font-size: 13px; color: var(--text-muted);">Lose a daily challenge? Must place the late-night room service order, wait for the door, and set up the balcony spread.</div>
+        <div style="font-size: 15px; color: var(--text-muted);">Lose a daily challenge? Must place the late-night room service order, wait for the door, and set up the balcony spread.</div>
     </div>
 
     <div class="section-title">🏆 Joint Rewards Unlocked</div>
@@ -354,9 +355,9 @@
         <div class="modal-content" style="text-align: center;">
             <button class="modal-close" onclick="closeRandomModal()">✕</button>
             <h2 class="modal-h2" style="border:none; margin-bottom: 5px;">🎲 Your Random Dare</h2>
-            <div id="random-dare-text" style="font-size: 18px; font-weight: bold; margin: 20px 0; color: var(--accent-teal);"></div>
-            <div id="random-dare-pts" style="font-size: 14px; color: var(--accent-gold); font-weight: bold; margin-bottom: 20px;"></div>
-            <button class="details-btn" onclick="closeRandomModal()">Accept Challenge 🔥</button>
+            <div id="random-dare-text" style="font-size: 20px; font-weight: bold; margin: 20px 0; color: var(--accent-teal);"></div>
+            <div id="random-dare-pts" style="font-size: 16px; color: var(--accent-gold); font-weight: bold; margin-bottom: 20px;"></div>
+            <button class="action-btn" style="width: 100%;" onclick="closeRandomModal()">Accept Challenge 🔥</button>
         </div>
     </div>
 
